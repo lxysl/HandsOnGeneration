@@ -14,6 +14,7 @@ def train(model, dataloader, noise_scheduler, criterion, optimizer, device, num_
     model.train()
     for epoch in range(num_epochs):
         loss_sum = 0
+        num_batches = 0
         pbar = tqdm(dataloader)
         for batch in pbar:
             images, _ = batch
@@ -28,7 +29,8 @@ def train(model, dataloader, noise_scheduler, criterion, optimizer, device, num_
             optimizer.step()
 
             loss_sum += loss.item()
-            pbar.set_description(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss_sum/len(pbar):.4f}")
+            num_batches += 1
+            pbar.set_description(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss_sum/num_batches:.4f}")
         wandb.log({"loss": loss_sum / len(dataloader)})
     return model
 

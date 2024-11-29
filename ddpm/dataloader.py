@@ -6,18 +6,18 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
 
-def load_transformed_dataset(img_size=64, batch_size=128) -> DataLoader:
+def load_transformed_dataset(img_size=32, batch_size=128) -> DataLoader:
     # Load dataset and perform data transformations
     train_data_transform = transforms.Compose([
         transforms.Resize((img_size, img_size)),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),  # Scale data into [0, 1]
-        transforms.Lambda(lambda t: (t * 2) - 1),  # Scale between [-1, 1]
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),  # Scale between [-1, 1]
     ])
     test_data_transform = transforms.Compose([
         transforms.Resize((img_size, img_size)),
         transforms.ToTensor(),
-        transforms.Lambda(lambda t: (t * 2) - 1),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
 
     # Load CIFAR10 dataset
